@@ -1,0 +1,2 @@
+# rust
+Rustlang snippets
