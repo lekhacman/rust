@@ -1,2 +1,2 @@
 # rust
-Rustlang snippets
+Rustlang tour
