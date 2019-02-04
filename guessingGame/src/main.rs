@@ -18,7 +18,7 @@ fn main() {
 
         let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,
-            Err(_) => continuet,
+            Err(_) => continue,
         };
 
         match guess.cmp(&secret_number) {
