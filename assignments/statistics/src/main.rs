@@ -59,15 +59,15 @@ mod stats {
     pub fn median(collection: &Vec<i32>) -> f64 {
         let mut sorted = collection.clone();
         sorted.sort();
-        let len = sorted.len() as i32;
+        let len = sorted.len();
 
         let result = if len % 2 != 0 {
-            let n = ((len + 1) / 2) as usize;
+            let n = (len + 1) / 2;
             let value = &sorted[(n - 1)];
             f64::from(*value)
 
         } else {
-            let n = (len / 2) as usize;
+            let n = len / 2;
             mean(&vec![sorted[n-1], sorted[n]])
         };
 
