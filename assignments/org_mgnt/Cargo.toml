@@ -1,0 +1,8 @@
+[package]
+name = "org_mgnt"
+version = "0.1.0"
+authors = ["Andrew Le <andrew_le@aviva-asia.com>"]
+edition = "2018"
+
+[dependencies]
+uuid = {version = "0.7", features = ["v4"]}
