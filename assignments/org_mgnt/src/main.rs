@@ -9,30 +9,22 @@ Then let the user retrieve a list of all people in a department
 or all people in the company by department, sorted alphabetically.
 */
 fn main() {
-    let mut org = Org {
+    let org = &mut Org {
         departments: HashMap::new(),
         employees: HashMap::new(),
     };
+    let man_id = org.add_employee(String::from("Man"));
+    let andrew_id = org.add_employee(String::from("Andrew"));
+    let zen_id = org.add_employee(String::from("Min"));
 
-    let sales_id = org.add_department("Sales".to_string());
-    assert_eq!(org.departments.contains_key(&sales_id), true);
+    let it_dep_id = org.add_department(String::from("IT department"));
+    let it_deparment = org.departments.get_mut(&it_dep_id).unwrap();
+    it_deparment.add_member(&man_id);
+    it_deparment.add_member(&andrew_id);
+    it_deparment.add_member(&zen_id);
 
-    let it_id = org.add_department("IT Department".to_string());
-
-    let andrew_id = org.add_employee("Andrew".to_string());
-    assert_eq!(org.employees.contains_key(&andrew_id), true);
-    let man_id = org.add_employee("Man".to_string());
-
-
-    let it_department = org.departments.get_mut(&it_id).unwrap();
-    it_department.add_member(&andrew_id);
-    it_department.add_member(&man_id);
-
-    assert_eq!(it_department.members.contains(&andrew_id), true);
-
-    for id in &it_department.members {
-        let employee = org.employees.get(&id).unwrap();
-        println!("[IT Department] employee's name: {}", employee.name);
+    for emp in org.get_department_members(&it_dep_id, String::from("asc")) {
+        println!("[IT department] member: {}", emp.name);
     }
 }
 
@@ -58,6 +50,32 @@ impl Org {
         let employee = Employee {id, name};
         self.employees.insert(id, employee);
         id
+    }
+
+    fn get_department_members(&self, dep_id: &Uuid, strategy: String) -> Vec<&Employee> {
+        let department = self.departments.get(dep_id).unwrap();
+        let mut result = Vec::new();
+
+        for member_id in department.members.iter() {
+            result.push(self.employees.get(member_id).unwrap())
+        }
+
+        if strategy == "asc" {
+            result.sort_by(
+                |x, y|
+                    x.name.partial_cmp(&y.name).unwrap()
+            );
+        };
+
+        if strategy == "des" {
+            result.sort_by(
+                |x, y|
+                    x.name.partial_cmp(&y.name).unwrap()
+            );
+            result.reverse();
+        };
+
+        result
     }
 }
 
