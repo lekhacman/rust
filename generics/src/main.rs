@@ -6,7 +6,17 @@ fn main() {
         reply: false,
         retweet: false,
     };
-    println!("1 new tweet: {}", tweet.summarize());
+    notify(tweet)
+}
+
+pub fn notify<T: Summary>(item: T) {
+    println!("Breaking news! {}", item.summarize());
+}
+
+pub fn notify_2<T> (item: T)
+where T: Summary,
+{
+
 }
 
 pub trait Summary {
