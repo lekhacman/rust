@@ -1,4 +1,3 @@
-
 fn main() {
     let tweet = Tweet {
         username: String::from("horse_ebooks"),
@@ -6,7 +5,19 @@ fn main() {
         reply: false,
         retweet: false,
     };
-    notify(tweet)
+    notify(tweet);
+
+    let a = String::from("Hello World!");
+    let b = "Hello world";
+    println!("The longest is {}", longest(a.as_str(), b));
+}
+
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
 }
 
 fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
