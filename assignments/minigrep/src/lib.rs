@@ -13,11 +13,11 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn search(query: &str, content: &str) -> Vec<String> {
+fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
     let mut result = vec![];
     for line in content.lines() {
         if line.contains(query) {
-            result.push(line.to_string())
+            result.push(line)
         }
     }
 
@@ -86,12 +86,20 @@ mod tests {
 
     #[test]
     fn test_search() {
-        let content = String::from("Hello \nWorld \n or friend");
+        let content = String::from("\
+Hello World
+or friend
+and fellow
+        ");
         let query = String::from("or");
 
         let lines = search(&query, &content);
-        assert_eq!(lines.len(), 2);
-        assert_eq!(lines[0], "World ".to_string());
-        assert_eq!(lines[1], " or friend".to_string());
+        assert_eq!(
+            vec![
+                "Hello World",
+                "or friend",
+            ],
+            lines
+        )
     }
 }
