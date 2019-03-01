@@ -6,22 +6,17 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
     let result = search(&config.query, &contents);
 
-    for line in result.iter() {
-        println!("{}", line);
-    }
+    result.iter().for_each(
+        |line| println!("{}", line)
+    );
 
     Ok(())
 }
 
 fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
-    let mut result = vec![];
-    for line in content.lines() {
-        if line.contains(query) {
-            result.push(line)
-        }
-    }
-
-    result
+    content.lines()
+        .filter(|line| line.contains(query))
+        .collect()
 }
 
 pub struct Config {
