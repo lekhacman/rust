@@ -25,12 +25,17 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("Not enough arguments");
-        }
-        let query = args[1].clone();
-        let filename = args[2].clone();
+    pub fn new(mut args: std::env::Args) -> Result<Config, &'static str> {
+        args.next();
+
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("No query found"),
+        };
+        let filename = match args.next() {
+            Some(arg) => arg,
+            None => return Err("No file name"),
+        };
 
         Ok(Config { query, filename })
     }
@@ -41,26 +46,13 @@ mod tests {
     use crate::Config;
     use crate::run;
     use crate::search;
+    use std::env;
 
     #[test]
     fn new_config() {
-        let first_arg = String::from("first");
-        let second_arg = String::from("second");
-        let third_arg = String::from("third");
-        let args = [
-            first_arg.clone(),
-            second_arg.clone(),
-            third_arg.clone(),
-        ];
-        let config = Config::new(&args)
-            .unwrap_or_else(|_| {panic!("failed")});
-        assert_eq!(third_arg, config.filename);
-        assert_eq!(second_arg, config.query);
-
-        let failed_config = Config::new(&[
-            String::from("Hello world!"),
-        ]);
-        assert!(failed_config.is_err());
+        let args = env::args();
+        let config = Config::new(args);
+        assert!(config.is_err());
     }
 
     #[test]
