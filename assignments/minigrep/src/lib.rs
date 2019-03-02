@@ -13,7 +13,22 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
+/// Search a string in a string
+/// # Examples
+/// ```
+/// use minigrep::search;
+///
+/// assert_eq!(
+///     search(
+///         "a",
+///         "Hello world\nand friend",
+///     ),
+///     vec![
+///         "and friend"
+///     ]
+/// )
+/// ```
+pub fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
     content.lines()
         .filter(|line| line.contains(query))
         .collect()
